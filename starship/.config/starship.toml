@@ -1,0 +1,27 @@
+format = """\
+[ $username$hostname ](bg:#393b40 fg:#dfe1e5)\
+[](fg:#393b40 bg:#43454a)\
+[ $directory ](bg:#43454a fg:#dfe1e5)\
+[](fg:#43454a bg:none) """
+
+add_newline = false
+
+# Username module
+[username]
+show_always = true
+format = "[$user]($style)"
+style_user = "bg:#393b40 fg:#32a852 bold"
+style_root = "bg:#f75464 fg:#1e1f22 bold"  # Red for "root" user
+
+# Host name module (Device name)
+[hostname]
+ssh_only = false
+format = "[@$hostname]($style)"
+style = "bg:#393b40 fg:#326fa8 bold"
+
+# Directory module
+[directory]
+format = "[$path]($style)"
+style = "bg:#43454a fg:#dfe1e5 bold"
+truncate_to_repo = false
+truncation_length = 0 # Show full path
