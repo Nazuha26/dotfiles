@@ -1,14 +1,20 @@
 # Linux Dotfiles
 
-Just config files for some programs that I actively use.
+Just config files for some programs that I use.
 
 ## Requirements
 
-- git
-- stow
-- zsh
-- starship
-- micro
+- `git`
+- `stow`
+- Internet connection
+
+## Included Configurations
+
+This repository contains settings for the following programs:
+- Zsh
+- Starship
+- Micro
+- Vim
 
 ## Installation
 
@@ -18,7 +24,7 @@ Follow these steps to download and apply the settings:
 2. Clone this repository:
    
    ```bash
-   git clone https://github.com/Nazuha26/linux-dotfiles.git ~/.dotfiles
+   git clone https://github.com/Nazuha26/dotfiles.git ~/.dotfiles
    ```
 3. Go into the new folder:
    ```bash
@@ -26,7 +32,7 @@ Follow these steps to download and apply the settings:
    ```
 4. Use Stow to create the symbolic links for the programs you want:
    ```bash
-   stow zsh bash git starship micro
+   stow zsh starship micro vim
    ```
    OR apply all configs at once:
    ```bash
