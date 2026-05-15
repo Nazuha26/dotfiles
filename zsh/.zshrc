@@ -32,14 +32,24 @@ fi
 
 # ===== ALIASES =====
 # === System & Navigation ===
-alias ls='ls --color=auto'
-alias ll='ls -lahF'   # sort by alphabet
-alias lls='ls -lahFS' # sort by size (Bigger -> Lower)
-alias llt='ls -lahFt' # sort by time (Newer -> Older)
-alias llx='ls -lahFX' # sort by extension
+#alias ls='ls --color=auto'
+#alias ll='ls -lahF'   # sort by alphabet
+#alias lls='ls -lahFS' # sort by size (Bigger -> Lower)
+#alias llt='ls -lahFt' # sort by time (Newer -> Older)
+#alias llx='ls -lahFX' # sort by extension
+#alias tree='tree -aF'
+#alias treel='tree -aF -L' # set tree level
 
-alias tree='tree -aF'
-alias treel='tree -aF -L' # set tree level
+
+# eza support
+alias ls='eza --color=auto'
+alias ll='eza -lahF --color=auto'               # sort by alphabet
+alias lls='ll --sort=size'                      # sort by size (Bigger -> Lower)
+alias llt='ll --sort=newest'                    # sort by time (Newer -> Older)
+alias llx='ll --sort=extension'                 # sort by extension
+alias tree='eza -a --tree --color=auto'         # eza tree
+alias treel='tree --level'                      # set tree level
+
 
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
@@ -51,7 +61,6 @@ alias m='micro'
 
 # === Project Nox ===
 alias knox='killall -9 nox_client java; rm -rf ~/projects/nox/server/target'
-
 
 
 # ===== FZF INTEGRATION =====
