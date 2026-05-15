@@ -6,6 +6,7 @@ Just config files for some programs that I use.
 
 - `git`
 - `stow`
+- `eza` (required for modern `ls` aliases in Zsh)
 - Internet connection
 
 ## Included Configurations
