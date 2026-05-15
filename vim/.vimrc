@@ -2,10 +2,13 @@
 syntax on
 filetype plugin indent on
 
+let mapleader = " "
 set mouse=a
 set clipboard=unnamedplus
 set termguicolors
 set noshowmode
+set showcmd
+set showcmdloc=statusline
 
 set ttimeout
 set ttimeoutlen=50
@@ -36,6 +39,7 @@ set completeopt=menu,menuone,noinsert
 call plug#begin('~/.vim/plugged')
 Plug 'natebosch/vim-lsc'
 Plug 'bfrg/vim-cpp-modern'
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 call plug#end()
 
 
@@ -46,17 +50,33 @@ let g:lsc_server_commands = {
   \ }
 
 " ENABLE AUTOCOMPLETE
-let g:lsc_auto_complete = v:true
+let g:lsc_enable_autocomplete = v:true
   
-
+" C lang settings
 let g:cpp_member_highlight = 1
 let g:cpp_function_highlight = 1
 let g:cpp_attributes_highlight = 1
 
 
+" MULTICURSOR (vim-visual-multi)
+let g:VM_set_statusline = 0
+let g:VM_maps = {}
+let g:VM_maps["Add Cursor Down"] = '<M-Down>'
+let g:VM_maps["Add Cursor Up"]   = '<M-Up>'
+
+
+" SEARCH SETTINGS
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
+silent! nohlsearch
+
+
 " STATUSLINE COLORS
 highlight StlFilePath    guifg=#dddddd guibg=#555555 gui=NONE
 highlight StlFileFlags   guifg=#dddddd guibg=#444444 gui=NONE
+highlight StlKeys        guifg=#e0c92f guibg=#444444 gui=NONE
 highlight StlEncoding    guifg=#dddddd guibg=#666666 gui=NONE
 
 highlight StlModeNormal  guifg=#1a1a1a guibg=#00b3ff gui=NONE
@@ -64,8 +84,16 @@ highlight StlModeInsert  guifg=#1a1a1a guibg=#00e651 gui=NONE
 highlight StlModeVisual  guifg=#1a1a1a guibg=#ffe100 gui=NONE
 highlight StlModeReplace guifg=#1a1a1a guibg=#ff173a gui=NONE
 highlight StlModeCommand guifg=#1a1a1a guibg=#d62ce6 gui=NONE
+highlight StlModeMulti   guifg=#1a1a1a guibg=#ff9900 gui=NONE
 
 function! ModeBlock() abort
+  if exists('*VMInfos')
+    let l:vm = VMInfos()
+    if !empty(l:vm)
+      return '%#StlModeMulti#  MULTIC  '
+    endif
+  endif
+  
   let l:m = mode(1)
 
   if l:m =~# '^c'
@@ -93,6 +121,7 @@ function! MyStatusLine() abort
         \ '%#StlFileFlags# %m' .
         \ '%#StlFileFlags#%r' .
         \ '%#StlFileFlags#%=' .
+        \ '%#StlKeys# %S ' .
         \ '%#StlFilePath#  Ln %l, Col %c  ' .
         \ '%#StlEncoding# %{&fileencoding?&fileencoding:&encoding} ' .
         \ ModeBlock()
@@ -159,6 +188,12 @@ nnoremap <C-S-Up> :m .-2<CR>==
 nnoremap <C-S-Down> :m .+1<CR>==
 vnoremap <C-S-Up> :m '<-2<CR>gv=gv
 vnoremap <C-S-Down> :m '>+1<CR>gv=gv
+
+" CLEAR SEARCH RESULT
+nnoremap <Esc><Esc> :nohlsearch<CR>
+
+" FORMATTING
+nnoremap <leader>f :%!clang-format --style=file --assume-filename=%:p<CR>
 
 " --- DEV ---
 " Get syntax group under the cursor (for colorscheme)
