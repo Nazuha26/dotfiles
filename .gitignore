@@ -2,4 +2,5 @@
 *.bak
 *.png
 *.log
+*.swp
 micro/.config/micro/buffers/
