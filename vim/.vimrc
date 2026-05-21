@@ -329,7 +329,7 @@ function! HostPasteInsertExpr() abort
     return "\<C-r>z"
   endif
  
-  return "\<C-r>\<C-o>z\<C-o>']"
+  return "\<C-r>\<C-o>z\<C-o>`]"
 endfunction
 
 function! HostCopyVisual() abort
@@ -347,7 +347,7 @@ function! HostPasteAfter() abort
   set paste
   call HostLoadPasteRegister()
   normal! "zp
-  silent! normal! ']
+  silent! normal! `]
   let &paste = l:save_paste
 endfunction
 
@@ -357,7 +357,7 @@ function! HostPasteReplaceVisual() abort
   call HostLoadPasteRegister()
   normal! gv"_d
   normal! "zP
-  silent! normal! ']
+  silent! normal! `]
   let &paste = l:save_paste
 endfunction
 
