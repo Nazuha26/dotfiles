@@ -1,13 +1,14 @@
 " BASIC SETTINGS
 let mapleader = " "
 set mouse=a
-
+ 
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 set expandtab
 set autoindent
 set smartindent
+set whichwrap+=<,>,h,l,[,]
 
 set noshowmode
 set showcmd
@@ -114,7 +115,6 @@ let g:which_key_display_names = {' ': 'Space'} "
 
 let g:which_key_map['f'] = 'Format C/C++ code'
 let g:which_key_map[' '] = 'Clear search highlight'
-let g:which_key_map['l'] = 'Toggle spaces & tabs'
 
 let g:which_key_map['h'] = {
       \ 'name' : '+Git Hunks' ,
@@ -129,10 +129,7 @@ call which_key#register('<Space>', "g:which_key_map")
 
 " Toggle (Show-Hide) invisible symbols: tabs, spaces, trails
 set listchars=tab:→\ ,space:·,trail:·
-set nolist 
-nnoremap <silent> <leader>l :set list!<CR>
-
-
+set list
 
 
 " SEARCH SETTINGS
@@ -199,8 +196,6 @@ augroup END
 set shortmess+=I
 
 let g:startify_lists = [
-      \ { 'type': 'dir',       'header': ['   Files in the current folder:'] },
-      \ { 'type': 'files',     'header': ['   Recent files:'] },
       \ { 'type': 'bookmarks', 'header': ['   Bookmarks:'] },
       \ ]
 
@@ -317,11 +312,18 @@ function! HostLoadPasteRegister() abort
   return l:text
 endfunction
 
+function! IsVMActive() abort
+  return exists('*VMInfos') && !empty(VMInfos())
+endfunction
+
 function! HostPasteInsertExpr() abort
   call HostLoadPasteRegister()
 
-  " Insert register z literally, without autoindent/smartindent
-  return "\<C-r>\<C-o>z"
+  if IsVMActive()
+    return "\<C-r>z"
+  endif
+ 
+  return "\<C-r>\<C-o>z\<C-o>']"
 endfunction
 
 function! HostCopyVisual() abort
@@ -339,6 +341,7 @@ function! HostPasteAfter() abort
   set paste
   call HostLoadPasteRegister()
   normal! "zp
+  silent! normal! ']
   let &paste = l:save_paste
 endfunction
 
@@ -348,6 +351,7 @@ function! HostPasteReplaceVisual() abort
   call HostLoadPasteRegister()
   normal! gv"_d
   normal! "zP
+  silent! normal! ']
   let &paste = l:save_paste
 endfunction
 

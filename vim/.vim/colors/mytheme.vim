@@ -9,21 +9,21 @@ let g:colors_name = 'mytheme'
 " ========== COLORSCHEME ==========
 
 " Line numbers background
-highlight LineNr        guifg=#7a7f87 guibg=#202226 gui=NONE cterm=NONE term=NONE
-highlight LineNrAbove   guifg=#878b94 guibg=#202226 gui=NONE cterm=NONE term=NONE
-highlight LineNrBelow   guifg=#878b94 guibg=#202226 gui=NONE cterm=NONE term=NONE
+highlight LineNr        guifg=#7a7f87 guibg=NONE gui=NONE cterm=NONE term=NONE
+highlight LineNrAbove   guifg=#878b94 guibg=NONE gui=NONE cterm=NONE term=NONE
+highlight LineNrBelow   guifg=#878b94 guibg=NONE gui=NONE cterm=NONE term=NONE
 
 " Current line number
-highlight CursorLineNr guifg=#DCC66A guibg=#26292d gui=NONE cterm=NONE term=NONE
+highlight CursorLineNr guifg=#DCC66A guibg=NONE gui=NONE cterm=NONE term=NONE
 
 " Current line
 highlight CursorLine    guifg=NONE guibg=NONE gui=NONE cterm=NONE term=NONE
 
 " Other left columns
-highlight SignColumn     guifg=#7a7f87 guibg=#202226 gui=NONE
-highlight FoldColumn     guifg=#7a7f87 guibg=#202226 gui=NONE
-highlight CursorLineSign guifg=#7a7f87 guibg=#202226 gui=NONE
-highlight CursorLineFold guifg=#7a7f87 guibg=#202226 gui=NONE
+highlight SignColumn     guifg=#7a7f87 guibg=NONE gui=NONE
+highlight FoldColumn     guifg=#7a7f87 guibg=NONE gui=NONE
+highlight CursorLineSign guifg=#7a7f87 guibg=NONE gui=NONE
+highlight CursorLineFold guifg=#7a7f87 guibg=NONE gui=NONE
 
 " AUTOCOMPLETE POPUP MENU COLORS
 highlight Pmenu      guifg=#cccccc guibg=#373737 gui=NONE
@@ -40,8 +40,8 @@ highlight Search    guifg=#BCBEC4 guibg=#165E70 gui=NONE cterm=NONE term=NONE
 highlight IncSearch guifg=#BCBEC4 guibg=#1B758B gui=underline cterm=underline term=underline
 
 " Invisible Symbols Highlight
-highlight SpecialKey guifg=#606469 guibg=#3f4245 gui=NONE
- 
+highlight SpecialKey guifg=#525659 guibg=NONE gui=NONE
+
 " LSP diagnostics
 highlight lscDiagnosticError   guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE gui=undercurl cterm=undercurl term=undercurl guisp=#FA6675
 highlight lscDiagnosticWarning guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE gui=undercurl cterm=undercurl term=undercurl guisp=#F2C55C
