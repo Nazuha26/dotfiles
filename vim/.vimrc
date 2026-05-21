@@ -24,12 +24,37 @@ let &t_Ce = "\<Esc>[4:0m\<Esc>[59m"
 let &t_8u = "\<Esc>[58:2::%lu:%lu:%lum"
 
 
+" Vim state directories
+for s:dir in ['~/.vim/backup', '~/.vim/swap', '~/.vim/undo']
+  silent! call mkdir(expand(s:dir), 'p')
+endfor
+unlet s:dir
+
+set backup
+set backupdir=~/.vim/backup//
+set directory=~/.vim/swap//
+
+if has('persistent_undo')
+  set undofile
+  set undodir=~/.vim/undo//
+endif
+
+
+" vim-visual-multi settings must be defined before plugin mappings are initialized
+let g:VM_set_statusline = 0
+let g:VM_maps = {}
+let g:VM_maps["Add Cursor Down"] = '<M-Down>'
+let g:VM_maps["Add Cursor Up"]   = '<M-Up>'
+let g:VM_insert_special_keys = []
+
+ 
 " PLUGINS MANAGEMENT
 call plug#begin('~/.vim/plugged')
 Plug 'natebosch/vim-lsc'
 Plug 'bfrg/vim-cpp-modern'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'airblade/vim-gitgutter'
+Plug 'liuchengxu/vim-which-key'
 call plug#end()
 
 syntax on
@@ -43,14 +68,14 @@ colorscheme mytheme
 set number
 set relativenumber
 set numberwidth=4
-
+ 
 " Highlight only current line number, not whole text line
 set cursorline
 set cursorlineopt=number
 
 " THIN CURSOR IN INSERT MODE & BLOCK IN NORMAL MODE
-let &t_SI = "\e[6 q"
-let &t_EI = "\e[2 q"
+let &t_SI = "\e[5 q"
+let &t_EI = "\e[1 q"
 
 " AUTOCOMPLETE MENU BEHAVIOR
 set completeopt=menu,menuone,noinsert
@@ -70,13 +95,6 @@ let g:cpp_function_highlight = 1
 let g:cpp_attributes_highlight = 1
 
 
-" MULTICURSOR (vim-visual-multi)
-let g:VM_set_statusline = 0
-let g:VM_maps = {}
-let g:VM_maps["Add Cursor Down"] = '<M-Down>'
-let g:VM_maps["Add Cursor Up"]   = '<M-Up>'
-
-
 " GIT GUTTER
 set signcolumn=yes
 set updatetime=100
@@ -89,6 +107,31 @@ let g:gitgutter_sign_modified = '│'
 let g:gitgutter_sign_removed = '_'
 let g:gitgutter_sign_removed_first_line = '‾'
 let g:gitgutter_sign_modified_removed = '│'
+
+" vim-which-key SETTINGS
+let g:which_key_map = {}
+let g:which_key_display_names = {' ': 'Space'} "
+
+let g:which_key_map['f'] = 'Format C/C++ code'
+let g:which_key_map[' '] = 'Clear search highlight'
+let g:which_key_map['l'] = 'Toggle spaces & tabs'
+
+let g:which_key_map['h'] = {
+      \ 'name' : '+Git Hunks' ,
+      \ 'p' : 'Preview hunk' ,
+      \ 's' : 'Stage hunk' ,
+      \ 'u' : 'Undo hunk' ,
+      \ }
+
+call which_key#register('<Space>', "g:which_key_map")
+
+
+
+" Toggle (Show-Hide) invisible symbols: tabs, spaces, trails
+set listchars=tab:→\ ,space:·,trail:·
+set nolist 
+nnoremap <silent> <leader>l :set list!<CR>
+
 
 
 
@@ -137,7 +180,7 @@ function! MyStatusLine() abort
         \ '%#StlFileFlags#%r' .
         \ '%#StlFileFlags#%=' .
         \ '%#StlKeys# %S ' .
-        \ '%#StlFilePath#  Ln %l, Col %c  ' .
+        \ '%#StlFilePath# (%l, %c) ' .
         \ '%#StlEncoding# %{&fileencoding?&fileencoding:&encoding} ' .
         \ ModeBlock()
 endfunction
@@ -187,77 +230,86 @@ xnoremap <F24> <Esc>:redo<CR>
 " VISUAL BLOCK
 nnoremap <C-b> <C-v>
 
+" vim-which-key
+nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
+vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
 
-" COPY / CUT / PASTE through Lemonade
-if executable('lemonade')
 
-  function! LemonadeGetText() abort
+" COPY / CUT / PASTE through Lemonade or system clipboard
+function! HostClipboardText() abort
+  if executable('lemonade')
     let l:text = system('lemonade paste')
-    let l:text = substitute(l:text, '\r\n', "\n", 'g')
-    let l:text = substitute(l:text, '\r', "\n", 'g')
-    return l:text
-  endfunction
+  else
+    let l:text = getreg('+')
+  endif
 
-  function! LemonadeCopyVisual() abort
-    normal! gv"zy
-    call system('lemonade copy', getreg('z'))
-  endfunction
+  let l:text = substitute(l:text, '\r\n', "\n", 'g')
+  let l:text = substitute(l:text, '\r', "\n", 'g')
+  return l:text
+endfunction
 
-  function! LemonadeCutVisual() abort
-    normal! gv"zd
-    call system('lemonade copy', getreg('z'))
-  endfunction
+function! HostClipboardCopy(text) abort
+  if executable('lemonade')
+    call system('lemonade copy', a:text)
+  else
+    call setreg('+', a:text, 'v')
+  endif
+endfunction
 
-  function! LemonadePasteAfter() abort
-    let l:save_paste = &paste
-    set paste
-    call setreg('z', LemonadeGetText(), 'v')
-    normal! "zp
-    let &paste = l:save_paste
-  endfunction
+function! HostLoadPasteRegister() abort
+  let l:text = HostClipboardText()
+ 
+  call setreg('z', l:text, 'v')
+  call setreg('"', l:text, 'v')
+  call setreg('+', l:text, 'v')
 
-  function! LemonadePasteBefore() abort
-    let l:save_paste = &paste
-    set paste
-    call setreg('z', LemonadeGetText(), 'v')
-    normal! "zP
-    let &paste = l:save_paste
-  endfunction
+  return l:text
+endfunction
 
-  function! LemonadePasteReplaceVisual() abort
-    let l:save_paste = &paste
-    set paste
-    call setreg('z', LemonadeGetText(), 'v')
-    normal! gv"_d
-    normal! "zP
-    let &paste = l:save_paste
-  endfunction
+function! HostPasteInsertExpr() abort
+  call HostLoadPasteRegister()
 
-  " Copy / cut selected text
-  xnoremap <C-c> :<C-u>call LemonadeCopyVisual()<CR>
-  xnoremap <C-x> :<C-u>call LemonadeCutVisual()<CR>
+  " Insert register z literally, without autoindent/smartindent
+  return "\<C-r>\<C-o>z"
+endfunction
 
-  " Paste
-  nnoremap <C-v> :<C-u>call LemonadePasteAfter()<CR>
-  xnoremap <C-v> :<C-u>call LemonadePasteReplaceVisual()<CR>
-  inoremap <C-v> <Esc>:<C-u>call LemonadePasteAfter()<CR>a
-  cnoremap <C-v> <C-r>=system('lemonade paste')<CR>
+function! HostCopyVisual() abort
+  normal! gv"zy
+  call HostClipboardCopy(getreg('z'))
+endfunction
 
-else
+function! HostCutVisual() abort
+  normal! gv"zd
+  call HostClipboardCopy(getreg('z'))
+endfunction
+ 
+function! HostPasteAfter() abort
+  let l:save_paste = &paste
+  set paste
+  call HostLoadPasteRegister()
+  normal! "zp
+  let &paste = l:save_paste
+endfunction
 
-  " COPY
-  vnoremap <C-c> "+y
+function! HostPasteReplaceVisual() abort
+  let l:save_paste = &paste
+  set paste
+  call HostLoadPasteRegister()
+  normal! gv"_d
+  normal! "zP
+  let &paste = l:save_paste
+endfunction
 
-  " CUT
-  vnoremap <C-x> "+d
+" Copy / cut selected text
+xnoremap <C-c> :<C-u>call HostCopyVisual()<CR>
+xnoremap <C-x> :<C-u>call HostCutVisual()<CR>
 
-  " PASTE
-  nnoremap <C-v> "+p
-  inoremap <C-v> <C-r>+
-  cnoremap <C-v> <C-r>+
-  vnoremap <C-v> "-d"+P
+" Paste
+nnoremap <C-v> :<C-u>call HostPasteAfter()<CR>
+xnoremap <C-v> :<C-u>call HostPasteReplaceVisual()<CR>
+inoremap <silent><expr> <C-v> HostPasteInsertExpr()
+cnoremap <C-v> <C-r>=HostClipboardText()<CR>
 
-endif
 
 
 " SELECT ALL

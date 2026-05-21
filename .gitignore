@@ -4,3 +4,8 @@
 *.log
 *.swp
 micro/.config/micro/buffers/
+
+# Vim state directories
+vim/.vim/backup/
+vim/.vim/swap/
+vim/.vim/undo/

@@ -14,16 +14,16 @@ highlight LineNrAbove   guifg=#878b94 guibg=#202226 gui=NONE cterm=NONE term=NON
 highlight LineNrBelow   guifg=#878b94 guibg=#202226 gui=NONE cterm=NONE term=NONE
 
 " Current line number
-highlight CursorLineNr guifg=#e0c92f guibg=#26292d gui=NONE cterm=NONE term=NONE
+highlight CursorLineNr guifg=#DCC66A guibg=#26292d gui=NONE cterm=NONE term=NONE
 
 " Current line
 highlight CursorLine    guifg=NONE guibg=NONE gui=NONE cterm=NONE term=NONE
 
 " Other left columns
-highlight SignColumn       guifg=#7a7f87 guibg=#202226 gui=NONE
-highlight FoldColumn       guifg=#7a7f87 guibg=#202226 gui=NONE
-highlight CursorLineSign   guifg=#7a7f87 guibg=#202226 gui=NONE
-highlight CursorLineFold   guifg=#7a7f87 guibg=#202226 gui=NONE
+highlight SignColumn     guifg=#7a7f87 guibg=#202226 gui=NONE
+highlight FoldColumn     guifg=#7a7f87 guibg=#202226 gui=NONE
+highlight CursorLineSign guifg=#7a7f87 guibg=#202226 gui=NONE
+highlight CursorLineFold guifg=#7a7f87 guibg=#202226 gui=NONE
 
 " AUTOCOMPLETE POPUP MENU COLORS
 highlight Pmenu      guifg=#cccccc guibg=#373737 gui=NONE
@@ -39,6 +39,9 @@ highlight VisualNOS guifg=#BCBEC4 guibg=#3b3d40 gui=NONE cterm=NONE term=NONE
 highlight Search    guifg=#BCBEC4 guibg=#165E70 gui=NONE cterm=NONE term=NONE
 highlight IncSearch guifg=#BCBEC4 guibg=#1B758B gui=underline cterm=underline term=underline
 
+" Invisible Symbols Highlight
+highlight SpecialKey guifg=#606469 guibg=#3f4245 gui=NONE
+ 
 " LSP diagnostics
 highlight lscDiagnosticError   guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE gui=undercurl cterm=undercurl term=undercurl guisp=#FA6675
 highlight lscDiagnosticWarning guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE gui=undercurl cterm=undercurl term=undercurl guisp=#F2C55C
@@ -77,6 +80,10 @@ highlight Comment       guifg=#7A9B68 guibg=NONE gui=NONE
 highlight String        guifg=#6aab73 guibg=NONE gui=NONE
 highlight Number        guifg=#2aacb8 guibg=NONE gui=NONE
 highlight Boolean       guifg=#DCC66A guibg=NONE gui=NONE
+highlight Statement     guifg=#DCC66A guibg=NONE gui=bold cterm=bold
+highlight Conditional   guifg=#DCC66A guibg=NONE gui=bold cterm=bold
+highlight Repeat        guifg=#DCC66A guibg=NONE gui=bold cterm=bold
+highlight Keyword       guifg=#DCC66A guibg=NONE gui=bold cterm=bold
 highlight Label         guifg=#B86FC6 guibg=NONE gui=NONE
 highlight Operator      guifg=#BCBEC4 guibg=NONE gui=NONE
 highlight Exception     guifg=#ffa657 guibg=NONE gui=NONE
@@ -89,10 +96,6 @@ highlight Todo          guifg=#C06AA8 guibg=NONE gui=NONE
 " Groups linked to existing groups with same color/style
 highlight! link Character     String
 highlight! link Float         Number
-highlight! link Statement     Boolean
-highlight! link Conditional   Boolean
-highlight! link Repeat        Boolean
-highlight! link Keyword       Boolean
 highlight! link PreProc       Boolean
 highlight! link StorageClass  Boolean
 highlight! link Structure     Boolean
