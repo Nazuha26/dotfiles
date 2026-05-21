@@ -1,7 +1,6 @@
 " BASIC SETTINGS
 let mapleader = " "
 set mouse=a
-set clipboard=unnamedplus
 
 set tabstop=4
 set shiftwidth=4
@@ -55,6 +54,7 @@ Plug 'bfrg/vim-cpp-modern'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'airblade/vim-gitgutter'
 Plug 'liuchengxu/vim-which-key'
+Plug 'mhinz/vim-startify'
 call plug#end()
 
 syntax on
@@ -195,6 +195,46 @@ augroup StatuslineRedraw
 augroup END
 
 
+" ===== STARTIFY =====
+set shortmess+=I
+
+let g:startify_lists = [
+      \ { 'type': 'dir',       'header': ['   Files in the current folder:'] },
+      \ { 'type': 'files',     'header': ['   Recent files:'] },
+      \ { 'type': 'bookmarks', 'header': ['   Bookmarks:'] },
+      \ ]
+
+let g:startify_bookmarks = [
+      \ {'v': '~/.vimrc'},
+      \ {'t': '~/.vim/colors/mytheme.vim'},
+      \ ]
+
+function! CurrentVimVersion() abort
+  let l:major = v:version / 100
+  let l:minor = v:version % 100
+
+  if exists('v:versionlong')
+    let l:patch = v:versionlong % 10000
+    return printf('%d.%d.%d', l:major, l:minor, l:patch)
+  endif
+
+  return printf('%d.%d', l:major, l:minor)
+endfunction
+
+function! StartifyHeader() abort
+  let l:logo = [
+        \ '',
+        \ 'Vim ' . CurrentVimVersion(),
+        \ '',
+        \ ]
+
+  return startify#center(l:logo)
+endfunction
+
+let g:startify_custom_header = 'StartifyHeader()'
+
+let g:startify_change_to_dir = 1
+
 
 " ===== HOTKEYS MAPPING =====
 
@@ -236,11 +276,17 @@ vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
 
 
 " COPY / CUT / PASTE through Lemonade or system clipboard
+function! HasNativeClipboard() abort
+  return has('clipboard') && (!has('unix') || !empty($DISPLAY) || !empty($WAYLAND_DISPLAY))
+endfunction
+
 function! HostClipboardText() abort
   if executable('lemonade')
     let l:text = system('lemonade paste')
-  else
+  elseif HasNativeClipboard()
     let l:text = getreg('+')
+  else
+    let l:text = getreg('"')
   endif
 
   let l:text = substitute(l:text, '\r\n', "\n", 'g')
@@ -251,17 +297,22 @@ endfunction
 function! HostClipboardCopy(text) abort
   if executable('lemonade')
     call system('lemonade copy', a:text)
-  else
+  elseif HasNativeClipboard()
     call setreg('+', a:text, 'v')
+  else
+    call setreg('"', a:text, 'v')
   endif
 endfunction
 
 function! HostLoadPasteRegister() abort
   let l:text = HostClipboardText()
- 
+
   call setreg('z', l:text, 'v')
   call setreg('"', l:text, 'v')
-  call setreg('+', l:text, 'v')
+
+  if HasNativeClipboard()
+    call setreg('+', l:text, 'v')
+  endif
 
   return l:text
 endfunction
