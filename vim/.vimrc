@@ -218,8 +218,14 @@ endfunction
 
 function! StartifyHeader() abort
   let l:logo = [
+        \ ' ____   ____ __          ',
+        \ ' \   \ /   /|__| _____   ',
+        \ '  \   Y   / |  |/     \  ',
+        \ '   \     /  |  |  Y Y  \ ',
+        \ '    \___/   |__|__|_|  / ',
+        \ '                     \/  ',
         \ '',
-        \ 'Vim ' . CurrentVimVersion(),
+        \ ' ======= ' . CurrentVimVersion() . ' ======= ',
         \ '',
         \ ]
 
