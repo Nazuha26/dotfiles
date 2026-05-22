@@ -332,11 +332,6 @@ function! HostPasteInsertExpr() abort
   return "\<C-r>\<C-o>z\<C-o>`]"
 endfunction
 
-function! HostCopyVisual() abort
-  normal! gv"zy
-  call HostClipboardCopy(getreg('z'))
-endfunction
-
 function! HostCutVisual() abort
   normal! gv"zd
   call HostClipboardCopy(getreg('z'))
@@ -360,6 +355,27 @@ function! HostPasteReplaceVisual() abort
   silent! normal! `]
   let &paste = l:save_paste
 endfunction
+
+function! HostCopyWordUnderCursor() abort
+  let l:view = winsaveview()
+
+  normal! "zyiw
+  call HostClipboardCopy(getreg('z'))
+
+  call winrestview(l:view)
+endfunction
+
+function! HostCopyVisual() abort
+  let l:view = winsaveview()
+
+  normal! gv"zy
+  call HostClipboardCopy(getreg('z'))
+
+  call winrestview(l:view)
+endfunction
+
+" Copy word under cursor
+nnoremap <C-c> :<C-u>call HostCopyWordUnderCursor()<CR>
 
 " Copy / cut selected text
 xnoremap <C-c> :<C-u>call HostCopyVisual()<CR>
