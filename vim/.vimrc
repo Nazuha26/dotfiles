@@ -140,6 +140,36 @@ set smartcase
 silent! nohlsearch
 
 
+" Automatic hex mode for any files opened with the -b flag
+augroup AutoBinary
+  autocmd!
+  autocmd BufReadPost * call s:AutoBinaryRead()
+  autocmd BufWritePre * call s:AutoBinaryWritePre()
+  autocmd BufWritePost * call s:AutoBinaryWritePost()
+augroup END
+
+function! s:AutoBinaryRead() abort
+  if &binary
+    silent keepjumps %!xxd -c 16 -g 1
+    setlocal filetype=xxd
+    setlocal nomodified
+  endif
+endfunction
+
+function! s:AutoBinaryWritePre() abort
+  if &binary
+    silent keepjumps %!xxd -r
+  endif
+endfunction
+
+function! s:AutoBinaryWritePost() abort
+  if &binary
+    silent keepjumps %!xxd -c 16 -g 1
+    setlocal filetype=xxd
+    setlocal nomodified
+  endif
+endfunction
+
 
 function! ModeBlock() abort
   if exists('*VMInfos')
