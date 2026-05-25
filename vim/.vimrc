@@ -239,6 +239,13 @@ let g:startify_change_to_dir = 1
 
 " ===== HOTKEYS MAPPING =====
 
+" AUTO-PAIRING BRACKETS & QUOTES
+inoremap " ""<Left>
+inoremap ( ()<Left>
+inoremap [ []<Left>
+inoremap { {}<Left>
+inoremap ' ''<Left>
+
 " SCROLL WITH CTRL + ARROWS
 nnoremap <C-Up>   <C-y>
 nnoremap <C-Down> <C-e>
@@ -365,6 +372,15 @@ function! HostCopyWordUnderCursor() abort
   call winrestview(l:view)
 endfunction
 
+function! HostCutWordUnderCursor() abort
+  let l:view = winsaveview()
+  
+  normal! "zdiw
+  call HostClipboardCopy(getreg('z'))
+
+  call winrestview(l:view)
+endfunction
+
 function! HostCopyVisual() abort
   let l:view = winsaveview()
 
@@ -376,6 +392,9 @@ endfunction
 
 " Copy word under cursor
 nnoremap <C-c> :<C-u>call HostCopyWordUnderCursor()<CR>
+
+" Cut word under cursor
+nnoremap <C-x> :<C-u>call HostCutWordUnderCursor()<CR>
 
 " Copy / cut selected text
 xnoremap <C-c> :<C-u>call HostCopyVisual()<CR>

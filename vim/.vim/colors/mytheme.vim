@@ -32,8 +32,8 @@ highlight PmenuSbar  guibg=#303030
 highlight PmenuThumb guibg=#575757
 
 " Selection color
-highlight Visual    guifg=#BCBEC4 guibg=#3b3d40 gui=NONE cterm=NONE term=NONE
-highlight VisualNOS guifg=#BCBEC4 guibg=#3b3d40 gui=NONE cterm=NONE term=NONE
+highlight Visual    guifg=NONE guibg=#3b3d40 gui=NONE cterm=NONE term=NONE
+highlight VisualNOS guifg=NONE guibg=#3b3d40 gui=NONE cterm=NONE term=NONE
 
 " Search highlight
 highlight Search    guifg=#BCBEC4 guibg=#165E70 gui=NONE cterm=NONE term=NONE
@@ -42,11 +42,18 @@ highlight IncSearch guifg=#BCBEC4 guibg=#1B758B gui=underline cterm=underline te
 " Invisible Symbols Highlight
 highlight SpecialKey guifg=#525659 guibg=NONE gui=NONE
 
-" LSP diagnostics
-highlight lscDiagnosticError   guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE gui=undercurl cterm=undercurl term=undercurl guisp=#FA6675
-highlight lscDiagnosticWarning guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE gui=undercurl cterm=undercurl term=undercurl guisp=#F2C55C
-highlight lscDiagnosticInfo    guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE gui=undercurl cterm=undercurl term=undercurl guisp=#3592C4
-highlight lscDiagnosticHint    guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE gui=undercurl cterm=undercurl term=undercurl guisp=#7EC482
+" LSP diagnostics UNDERLINED
+"highlight lscDiagnosticError   guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE gui=undercurl cterm=undercurl term=undercurl guisp=#FA6675
+"highlight lscDiagnosticWarning guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE gui=undercurl cterm=undercurl term=undercurl guisp=#F2C55C
+"highlight lscDiagnosticInfo    guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE gui=undercurl cterm=undercurl term=undercurl guisp=#3592C4
+"highlight lscDiagnosticHint    guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE gui=undercurl cterm=undercurl term=undercurl guisp=#7EC482
+
+" LSP diagnostics BG
+highlight lscDiagnosticError   guifg=NONE guibg=#FA6675 ctermfg=NONE ctermbg=NONE gui=NONE cterm=NONE term=NONE
+highlight lscDiagnosticWarning guifg=NONE guibg=#F2C55C ctermfg=NONE ctermbg=NONE gui=NONE cterm=NONE term=NONE
+highlight lscDiagnosticInfo    guifg=NONE guibg=#3592C4 ctermfg=NONE ctermbg=NONE gui=NONE cterm=NONE term=NONE
+highlight lscDiagnosticHint    guifg=NONE guibg=#7EC482 ctermfg=NONE ctermbg=NONE gui=NONE cterm=NONE term=NONE
+
 
 highlight lscReference guifg=NONE guibg=#42454a gui=NONE
 
