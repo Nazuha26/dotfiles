@@ -1,7 +1,7 @@
 " BASIC SETTINGS
 let mapleader = " "
 set mouse=a
- 
+
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
@@ -33,18 +33,13 @@ unlet s:dir
 set backup
 set backupdir=~/.vim/backup//
 set directory=~/.vim/swap//
-
-if has('persistent_undo')
-  set undofile
-  set undodir=~/.vim/undo//
-endif
-
+set noundofile
 
 " vim-visual-multi settings must be defined before plugin mappings are initialized
 let g:VM_set_statusline = 0
 let g:VM_maps = {}
 let g:VM_maps["Add Cursor Down"] = '<M-Down>'
-let g:VM_maps["Add Cursor Up"]   = '<M-Up>'
+let g:VM_maps["Add Cursor Up"] = '<M-Up>'
 let g:VM_insert_special_keys = []
 
  
